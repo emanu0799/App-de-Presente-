@@ -1,6 +1,15 @@
 import { neon } from "@neondatabase/serverless";
 
-const sql = neon(process.env.DATABASE_URL);
+let sqlClient;
+
+function getSql() {
+  if (!process.env.DATABASE_URL) {
+    throw new Error("DATABASE_URL nao configurada");
+  }
+
+  sqlClient ||= neon(process.env.DATABASE_URL);
+  return sqlClient;
+}
 
 function send(res, status, data) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -10,6 +19,7 @@ function send(res, status, data) {
 }
 
 async function readData() {
+  const sql = getSql();
   const gifts = await sql`
     select id, title, category, price, description, image, url
     from gifts
@@ -22,6 +32,7 @@ async function readData() {
 }
 
 async function addGift(res, gift) {
+  const sql = getSql();
   if (!gift?.id || !gift?.title) {
     send(res, 400, { ok: false, error: "Presente invalido" });
     return;
@@ -51,6 +62,7 @@ async function addGift(res, gift) {
 }
 
 async function deleteGift(res, giftId) {
+  const sql = getSql();
   if (!giftId) {
     send(res, 400, { ok: false, error: "Presente invalido" });
     return;
@@ -61,6 +73,7 @@ async function deleteGift(res, giftId) {
 }
 
 async function reserveGift(res, giftId, guest) {
+  const sql = getSql();
   if (!giftId || !guest) {
     send(res, 400, { ok: false, error: "Reserva invalida" });
     return;
@@ -88,12 +101,37 @@ export default async function handler(req, res) {
   }
 
   try {
-    if (!process.env.DATABASE_URL) {
-      send(res, 500, { ok: false, error: "DATABASE_URL nao configurada" });
-      return;
-    }
-
     if (req.method === "GET") {
       send(res, 200, await readData());
       return;
     }
+
+    if (req.method === "POST") {
+      const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body || {};
+
+      if (body.action === "addGift") {
+        await addGift(res, body.gift);
+        return;
+      }
+
+      if (body.action === "deleteGift") {
+        await deleteGift(res, body.giftId);
+        return;
+      }
+
+      if (body.action === "reserve") {
+        await reserveGift(res, body.giftId, body.guest);
+        return;
+      }
+
+      if (body.action === "list") {
+        send(res, 200, await readData());
+        return;
+      }
+    }
+
+    send(res, 405, { ok: false, error: "Metodo nao permitido" });
+  } catch (error) {
+    send(res, 500, { ok: false, error: error.message });
+  }
+}
