@@ -10,7 +10,7 @@
   --mint: #d8efe7;
   --navy: #14213d;
   --line: rgba(16, 25, 35, 0.12);
-  --shadow: 0 18px 50px rgba(16, 25, 35, 0.14);
+  --shadow: 0 16px 42px rgba(16, 25, 35, 0.12);
 }
 
 [hidden] {
@@ -59,11 +59,12 @@ button {
 
 .hero {
   position: relative;
-  min-height: 88vh;
+  min-height: 72vh;
   overflow: hidden;
   background:
-    radial-gradient(circle at 20% 18%, rgba(216, 239, 231, 0.95), transparent 26rem),
-    linear-gradient(135deg, #ffffff 0%, #f6fbfb 48%, #e7f3f0 100%);
+    radial-gradient(circle at 14% 16%, rgba(216, 239, 231, 0.9), transparent 20rem),
+    radial-gradient(circle at 88% 26%, rgba(215, 168, 75, 0.2), transparent 16rem),
+    linear-gradient(135deg, #ffffff 0%, #f6fbfb 52%, #eaf5f2 100%);
 }
 
 .topbar {
@@ -129,9 +130,9 @@ button {
   gap: 46px;
   align-items: center;
   width: min(1120px, calc(100% - 32px));
-  min-height: calc(88vh - 86px);
+  min-height: calc(72vh - 86px);
   margin: 0 auto;
-  padding: 34px 0 80px;
+  padding: 22px 0 54px;
 }
 
 .hero-copy {
@@ -154,10 +155,10 @@ p {
 }
 
 h1 {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   color: var(--navy);
-  font-size: clamp(3.1rem, 7vw, 6.7rem);
-  line-height: 0.92;
+  font-size: clamp(2.65rem, 5.8vw, 5.35rem);
+  line-height: 0.96;
   letter-spacing: 0;
 }
 
@@ -203,12 +204,17 @@ h2 {
 .primary-button {
   color: #fff;
   background: var(--teal);
-  box-shadow: 0 14px 30px rgba(0, 109, 119, 0.24);
+  box-shadow: 0 10px 24px rgba(0, 109, 119, 0.18);
 }
 
 .secondary-button {
   color: var(--teal-dark);
   background: var(--mint);
+}
+
+.danger-button {
+  background: var(--coral);
+  box-shadow: 0 10px 24px rgba(232, 111, 91, 0.2);
 }
 
 .primary-button:hover,
@@ -217,24 +223,24 @@ h2 {
 }
 
 .hero-stage {
-  min-height: 500px;
+  min-height: 360px;
 }
 
 .gift-scene {
   position: relative;
-  min-height: 500px;
+  min-height: 360px;
 }
 
 .photo-tile {
   position: absolute;
   right: 0;
   bottom: 24px;
-  width: min(74%, 480px);
+  width: min(70%, 410px);
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  border: 10px solid #fff;
+  border: 8px solid #fff;
   border-radius: 8px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 16px 36px rgba(16, 25, 35, 0.12);
   transform: rotate(2deg);
 }
 
@@ -249,8 +255,30 @@ h2 {
   display: grid;
   place-items: center;
   border-radius: 8px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 12px 26px rgba(16, 25, 35, 0.1);
   animation: floaty 4.6s ease-in-out infinite;
+}
+
+.gift-card,
+.primary-button,
+.secondary-button,
+.small-button,
+.icon-button {
+  will-change: transform;
+}
+
+.gift-card::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.28) 42%, transparent 64%);
+  opacity: 0;
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+.gift-card:hover::after {
+  animation: sheen 780ms ease;
 }
 
 .gift::before,
@@ -295,9 +323,9 @@ h2 {
 .gift-large {
   z-index: 2;
   left: 24px;
-  bottom: 92px;
-  width: 190px;
-  height: 164px;
+  bottom: 58px;
+  width: 150px;
+  height: 130px;
   background: var(--coral);
 }
 
@@ -305,19 +333,19 @@ h2 {
   z-index: 3;
   top: 62px;
   right: 80px;
-  width: 124px;
-  height: 110px;
+  width: 94px;
+  height: 84px;
   background: var(--gold);
   animation-delay: -1.4s;
 }
 
 .ribbon-loop {
   position: absolute;
-  top: 94px;
+  top: 72px;
   left: 42px;
-  width: 180px;
-  height: 180px;
-  border: 18px solid var(--teal);
+  width: 142px;
+  height: 142px;
+  border: 14px solid var(--teal);
   border-right-color: transparent;
   border-radius: 50%;
   transform: rotate(-24deg);
@@ -329,7 +357,7 @@ h2 {
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
   width: min(1120px, calc(100% - 32px));
-  margin: 28px auto 72px;
+  margin: 22px auto 56px;
   overflow: hidden;
   border-radius: 8px;
   box-shadow: var(--shadow);
@@ -338,7 +366,7 @@ h2 {
 .status-band div {
   display: grid;
   gap: 4px;
-  min-height: 118px;
+  min-height: 96px;
   place-items: center;
   padding: 18px;
   text-align: center;
@@ -347,7 +375,7 @@ h2 {
 
 .status-band strong {
   color: var(--teal);
-  font-size: 2.2rem;
+  font-size: 1.9rem;
 }
 
 .status-band span {
@@ -415,10 +443,8 @@ h2 {
   padding: 34px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(216, 239, 231, 0.62)),
-    radial-gradient(circle at 95% 12%, rgba(215, 168, 75, 0.3), transparent 18rem);
-  box-shadow: 0 12px 28px rgba(16, 25, 35, 0.08);
+  background: #fff;
+  box-shadow: none;
 }
 
 .creator-grid {
@@ -523,16 +549,18 @@ h2 {
 .gift-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  gap: 14px;
 }
 
 .gift-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--surface);
-  box-shadow: 0 12px 28px rgba(16, 25, 35, 0.08);
+  box-shadow: 0 10px 24px rgba(16, 25, 35, 0.06);
   transition:
     transform 180ms ease,
     box-shadow 180ms ease,
@@ -541,8 +569,8 @@ h2 {
 
 .gift-card:hover {
   border-color: rgba(0, 109, 119, 0.36);
-  box-shadow: var(--shadow);
-  transform: translateY(-4px);
+  box-shadow: 0 18px 34px rgba(16, 25, 35, 0.12);
+  transform: translateY(-3px);
 }
 
 .gift-card.is-reserved {
@@ -551,6 +579,7 @@ h2 {
 
 .gift-image {
   position: relative;
+  flex: 0 0 auto;
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--mint);
@@ -564,7 +593,7 @@ h2 {
 }
 
 .gift-card:hover .gift-image img {
-  transform: scale(1.04);
+  transform: scale(1.06);
 }
 
 .tag {
@@ -580,23 +609,35 @@ h2 {
 }
 
 .card-body {
-  display: grid;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   gap: 12px;
-  padding: 18px;
+  padding: 16px;
 }
 
 .card-body h3 {
   margin: 0;
   color: var(--navy);
-  font-size: 1.18rem;
+  font-size: 1.05rem;
+  line-height: 1.28;
   letter-spacing: 0;
+  min-height: 4rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .card-body p {
-  min-height: 52px;
+  min-height: 4.4rem;
   margin: 0;
   color: var(--muted);
   line-height: 1.55;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .card-meta {
@@ -604,6 +645,7 @@ h2 {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  margin-top: auto;
 }
 
 .price {
@@ -651,6 +693,11 @@ h2 {
   font-size: 0.92rem;
 }
 
+.card-actions .primary-button,
+.card-actions .small-button {
+  height: 46px;
+}
+
 .small-button {
   display: inline-grid;
   min-width: 46px;
@@ -679,8 +726,9 @@ h2 {
   padding: 42px;
   border-radius: 8px;
   color: #fff;
+  border: 0;
   background:
-    linear-gradient(rgba(20, 33, 61, 0.78), rgba(20, 33, 61, 0.78)),
+    linear-gradient(rgba(20, 33, 61, 0.74), rgba(20, 33, 61, 0.74)),
     url("https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=1500&q=80")
       center / cover;
 }
@@ -693,7 +741,7 @@ h2 {
 
 .recado .primary-button {
   background: var(--gold);
-  box-shadow: 0 14px 30px rgba(215, 168, 75, 0.28);
+  box-shadow: 0 12px 26px rgba(215, 168, 75, 0.22);
 }
 
 .gift-modal {
@@ -702,7 +750,7 @@ h2 {
   border-radius: 8px;
   padding: 0;
   background: #fff;
-  box-shadow: var(--shadow);
+  box-shadow: 0 14px 34px rgba(16, 25, 35, 0.14);
 }
 
 .gift-modal::backdrop {
@@ -794,7 +842,7 @@ h2 {
   padding: 14px 16px;
   color: #fff;
   background: var(--teal-dark);
-  box-shadow: var(--shadow);
+  box-shadow: 0 10px 24px rgba(16, 25, 35, 0.12);
   opacity: 0;
   transform: translateY(16px);
   pointer-events: none;
@@ -811,13 +859,13 @@ h2 {
 .mobile-dock {
   position: fixed;
   right: 12px;
-  bottom: 12px;
+  bottom: 10px;
   left: 12px;
   z-index: 8;
   display: none;
   grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   gap: 4px;
-  padding: 6px;
+  padding: 5px;
   border: 1px solid rgba(16, 25, 35, 0.1);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.92);
@@ -827,11 +875,11 @@ h2 {
 
 .mobile-dock a {
   display: grid;
-  min-height: 42px;
+  min-height: 38px;
   place-items: center;
   border-radius: 10px;
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 900;
 }
 
@@ -852,11 +900,11 @@ h2 {
 .sparkles span {
   position: absolute;
   z-index: 1;
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--gold);
-  opacity: 0.6;
+  opacity: 0.48;
   animation: blink 2.8s ease-in-out infinite;
 }
 
@@ -917,6 +965,20 @@ h2 {
   50% {
     transform: scale(1.6);
     opacity: 0.9;
+  }
+}
+
+@keyframes sheen {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
   }
 }
 
@@ -1096,6 +1158,76 @@ h2 {
     grid-template-columns: 1fr;
   }
 
+  .gift-card {
+    display: grid;
+    grid-template-columns: 108px 1fr;
+    min-height: 118px;
+  }
+
+  .gift-image {
+    height: 100%;
+    min-height: 118px;
+    aspect-ratio: auto;
+  }
+
+  .gift-image img {
+    transform: none !important;
+  }
+
+  .tag {
+    top: 8px;
+    left: 8px;
+    padding: 5px 8px;
+    font-size: 0.68rem;
+  }
+
+  .card-body {
+    gap: 7px;
+    padding: 12px;
+  }
+
+  .card-body h3 {
+    min-height: auto;
+    font-size: 0.98rem;
+    line-height: 1.22;
+    -webkit-line-clamp: 2;
+  }
+
+  .card-body p {
+    display: none;
+  }
+
+  .card-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 0;
+  }
+
+  .price {
+    font-size: 0.94rem;
+  }
+
+  .reserved-by {
+    font-size: 0.76rem;
+  }
+
+  .card-actions {
+    grid-template-columns: 1fr;
+    margin-top: auto;
+  }
+
+  .card-actions .primary-button {
+    min-height: 38px;
+    height: 38px;
+    padding: 0 12px;
+    font-size: 0.84rem;
+  }
+
+  .card-actions .small-button {
+    display: none;
+  }
+
   .section-heading {
     align-items: flex-start;
     flex-direction: column;
@@ -1221,20 +1353,31 @@ h2 {
   }
 
   .gift-card {
-    box-shadow: 0 10px 24px rgba(16, 25, 35, 0.08);
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    min-height: 108px;
+    box-shadow: 0 8px 18px rgba(16, 25, 35, 0.06);
   }
 
   .gift-image {
-    aspect-ratio: 16 / 10;
+    height: 100%;
+    min-height: 108px;
+    aspect-ratio: auto;
   }
 
   .card-body {
-    gap: 10px;
-    padding: 16px;
+    gap: 6px;
+    padding: 11px;
+  }
+
+  .card-body h3 {
+    min-height: auto;
+    font-size: 0.94rem;
+    -webkit-line-clamp: 2;
   }
 
   .card-body p {
-    min-height: auto;
+    display: none;
   }
 
   .card-meta {
