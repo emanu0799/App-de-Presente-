@@ -5,7 +5,7 @@ const defaultSettings = {
   heroTitle: "Lista de presentes do Emanuel",
   heroText:
     "Veja as sugestoes, reserve o presente que combinou com voce e entre no clima com pequenas surpresas pelo caminho.",
-  whatsappNumber: "5547999999999",
+  whatsappNumber: "5547992812418",
   heroImage:
     "https://images.unsplash.com/photo-1512909006721-3d6018887383?auto=format&fit=crop&w=900&q=80",
 };
@@ -59,7 +59,7 @@ const defaultGifts = [
     description: "Um passeio, jantar ou momento especial escolhido por voce.",
     image:
       "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",
-    url: "https://wa.me/5547999999999?text=Quero%20combinar%20um%20vale%20experiencia%20de%20presente",
+    url: "",
   },
   {
     id: "pix-carinho",
@@ -69,7 +69,7 @@ const defaultGifts = [
     description: "Para contribuir com um sonho e deixar uma mensagem especial.",
     image:
       "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=80",
-    url: "https://wa.me/5547999999999?text=Oi!%20Quero%20pedir%20a%20chave%20Pix%20da%20lista%20de%20presentes.",
+    url: "",
   },
 ];
 
@@ -362,7 +362,7 @@ function openGift(giftId) {
   modalDescription.textContent = activeGift.description;
   modalPrice.textContent = activeGift.price;
   modalBadge.textContent = reservedBy ? "Presente reservado" : "Ainda disponivel";
-  buyLink.href = safeUrl(activeGift.url);
+  buyLink.href = safeUrl(activeGift.url, formatWhatsappMessage(activeGift.title));
   reserveButton.textContent = reservedBy ? "Cancelar reserva" : "Reservar presente";
   reserveButton.classList.toggle("danger-button", Boolean(reservedBy));
   document.body.classList.add("modal-open");
@@ -478,7 +478,7 @@ async function addGiftFromForm(event) {
   const title = giftTitle.value.trim();
   const price = giftPrice.value.trim();
   const description = giftDescription.value.trim();
-  const url = giftUrl.value.trim() || formatWhatsappMessage(title);
+  const url = giftUrl.value.trim();
   const image =
     giftImage.value.trim() ||
     "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=900&q=80";
