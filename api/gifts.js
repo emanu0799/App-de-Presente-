@@ -72,21 +72,32 @@ async function deleteGift(res, giftId) {
   send(res, 200, await readData());
 }
 
-async function reserveGift(res, giftId, guest) {
+async function reserveGift(res, giftId) {
   const sql = getSql();
-  if (!giftId || !guest) {
+  if (!giftId) {
     send(res, 400, { ok: false, error: "Reserva invalida" });
     return;
   }
 
   await sql`
     insert into reservations (gift_id, guest)
-    values (${giftId}, ${guest})
+    values (${giftId}, 'reservado')
     on conflict (gift_id) do update set
-      guest = excluded.guest,
+      guest = 'reservado',
       created_at = now()
   `;
 
+  send(res, 200, await readData());
+}
+
+async function cancelReservation(res, giftId) {
+  const sql = getSql();
+  if (!giftId) {
+    send(res, 400, { ok: false, error: "Reserva invalida" });
+    return;
+  }
+
+  await sql`delete from reservations where gift_id = ${giftId}`;
   send(res, 200, await readData());
 }
 
@@ -120,7 +131,12 @@ export default async function handler(req, res) {
       }
 
       if (body.action === "reserve") {
-        await reserveGift(res, body.giftId, body.guest);
+        await reserveGift(res, body.giftId);
+        return;
+      }
+
+      if (body.action === "cancelReservation") {
+        await cancelReservation(res, body.giftId);
         return;
       }
 
