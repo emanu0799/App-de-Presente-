@@ -145,6 +145,7 @@ const brandLabel = document.querySelector("#brandLabel");
 const heroTitle = document.querySelector("#heroTitle");
 const heroText = document.querySelector("#heroText");
 const heroImage = document.querySelector("#heroImage");
+const favicon = document.querySelector("#favicon");
 
 const reservations = new Map(Object.entries(JSON.parse(localStorage.getItem(storageKey) || "{}")));
 const editorEnabled = new URLSearchParams(window.location.search).get("editar") === "1";
@@ -634,7 +635,10 @@ function loadPhotoFromFile() {
 }
 
 function applySettings() {
-  document.title = `Lista de Presentes | ${settings.ownerName}`;
+  document.title = editorEnabled
+    ? `Editor | Lista de ${settings.ownerName}`
+    : `Lista de Presentes | ${settings.ownerName}`;
+  favicon.href = editorEnabled ? "favicon-editor.svg" : "favicon.svg";
   brandMark.textContent = settings.initials || "LP";
   brandLabel.textContent = settings.brandLabel || "Lista de Presentes";
   heroTitle.textContent = settings.heroTitle;
