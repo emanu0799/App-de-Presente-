@@ -617,6 +617,27 @@ h2 {
   gap: 8px;
 }
 
+.admin-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.admin-actions button {
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--teal-dark);
+  background: rgba(216, 239, 231, 0.62);
+  font-weight: 850;
+}
+
+.admin-actions button:last-child {
+  color: #fff;
+  border-color: var(--coral);
+  background: var(--coral);
+}
+
 .card-actions button,
 .card-actions a {
   min-height: 44px;
@@ -1067,6 +1088,10 @@ h2 {
   }
 
   .card-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-actions {
     grid-template-columns: 1fr;
   }
 

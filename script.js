@@ -81,9 +81,10 @@ let settings = loadSettings();
 let gifts = loadGiftCatalog();
 let giftApiUrl =
   localStorage.getItem(apiStorageKey) ||
-  "https://script.google.com/macros/s/AKfycbzBobHLoZAV625d7bU1esZYtaOAJPSD0fAdudvIvPTE0KaqRxaETUzcF3lvj630xaOuRw/exec";
+  (location.hostname.includes("vercel.app") ? "/api/gifts" : "");
 let activeFilter = "Todos";
 let activeGift = null;
+let editingGiftId = null;
 let audioEnabled = false;
 let audioContext = null;
 
@@ -123,6 +124,7 @@ const previewTitle = document.querySelector("#previewTitle");
 const previewDescription = document.querySelector("#previewDescription");
 const previewPrice = document.querySelector("#previewPrice");
 const clearFormButton = document.querySelector("#clearFormButton");
+const saveGiftButton = document.querySelector("#saveGiftButton");
 const resetCatalogButton = document.querySelector("#resetCatalogButton");
 const exportButton = document.querySelector("#exportButton");
 const importData = document.querySelector("#importData");
@@ -191,21 +193,40 @@ function normalizeGift(gift) {
 async function apiRequest(action, payload = {}) {
   if (!giftApiUrl) return null;
 
-  await fetch(giftApiUrl, {
+  const response = await fetch(giftApiUrl, {
     method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ action, ...payload }),
   });
 
-  return { ok: true };
+  if (!response.ok) throw new Error("Falha na conexao online");
+  return response.json();
 }
 
 async function syncCatalogFromCloud(showMessage = false) {
   if (!giftApiUrl) return;
 
-  if (showMessage) {
-    showToast("Modo online pronto. Novos presentes e reservas serao enviados para a planilha.");
+  try {
+    const response = await fetch(giftApiUrl);
+    if (!response.ok) throw new Error("Falha ao ler lista online");
+
+    const data = await response.json();
+    if (Array.isArray(data?.gifts) && data.gifts.length) {
+      gifts = data.gifts.map(normalizeGift);
+      saveGiftCatalog();
+    }
+
+    if (data?.reservations && typeof data.reservations === "object") {
+      reservations.clear();
+      Object.entries(data.reservations).forEach(([id, name]) => reservations.set(id, String(name)));
+      saveReservations();
+    }
+
+    updateStats();
+    renderGifts();
+    if (showMessage) showToast("Lista online sincronizada.");
+  } catch {
+    if (showMessage) showToast("Nao consegui conectar online. O app segue no modo local.");
   }
 }
 
@@ -295,6 +316,14 @@ function renderGifts() {
               </button>
               <a class="small-button" href="${formatWhatsappMessage(gift.title)}" target="_blank" rel="noreferrer" aria-label="Enviar mensagem sobre ${giftTitle}">WA</a>
             </div>
+            ${
+              editorEnabled
+                ? `<div class="admin-actions">
+                    <button type="button" data-edit="${escapeHtml(gift.id)}">Editar</button>
+                    <button type="button" data-delete="${escapeHtml(gift.id)}">Excluir</button>
+                  </div>`
+                : ""
+            }
           </div>
         </article>
       `;
@@ -303,6 +332,12 @@ function renderGifts() {
 
   grid.querySelectorAll("[data-open]").forEach((button) => {
     button.addEventListener("click", () => openGift(button.dataset.open));
+  });
+  grid.querySelectorAll("[data-edit]").forEach((button) => {
+    button.addEventListener("click", () => editGift(button.dataset.edit));
+  });
+  grid.querySelectorAll("[data-delete]").forEach((button) => {
+    button.addEventListener("click", () => deleteGift(button.dataset.delete));
   });
 }
 
@@ -439,6 +474,8 @@ function updatePreview() {
 
 function clearGiftForm() {
   giftForm.reset();
+  editingGiftId = null;
+  saveGiftButton.textContent = "Adicionar a lista";
   updatePreview();
 }
 
@@ -459,7 +496,7 @@ async function addGiftFromForm(event) {
   }
 
   const newGift = {
-    id: makeGiftId(title),
+    id: editingGiftId || makeGiftId(title),
     title,
     category: giftCategory.value,
     price,
@@ -468,9 +505,12 @@ async function addGiftFromForm(event) {
     url,
   };
 
-  gifts = [newGift, ...gifts];
+  gifts = editingGiftId
+    ? gifts.map((gift) => (gift.id === editingGiftId ? newGift : gift))
+    : [newGift, ...gifts];
 
   saveGiftCatalog();
+  const wasEditing = Boolean(editingGiftId);
   try {
     await apiRequest("addGift", { gift: newGift });
   } catch {
@@ -480,7 +520,47 @@ async function addGiftFromForm(event) {
   renderGifts();
   clearGiftForm();
   burstConfetti(80);
-  showToast("Presente adicionado com visual pronto.");
+  showToast(wasEditing ? "Presente atualizado." : "Presente adicionado com visual pronto.");
+}
+
+function editGift(giftId) {
+  const gift = gifts.find((item) => item.id === giftId);
+  if (!gift) return;
+
+  editingGiftId = gift.id;
+  giftUrl.value = gift.url || "";
+  giftTitle.value = gift.title || "";
+  giftPrice.value = gift.price || "";
+  giftCategory.value = gift.category || "Casa";
+  giftImage.value = gift.image || "";
+  giftDescription.value = gift.description || "";
+  saveGiftButton.textContent = "Salvar alteracoes";
+  updatePreview();
+  document.querySelector("#editor").scrollIntoView({ behavior: "smooth", block: "start" });
+  showToast("Edite os campos e salve as alteracoes.");
+}
+
+async function deleteGift(giftId) {
+  const gift = gifts.find((item) => item.id === giftId);
+  if (!gift) return;
+
+  const confirmed = window.confirm(`Excluir "${gift.title}" da lista?`);
+  if (!confirmed) return;
+
+  gifts = gifts.filter((item) => item.id !== giftId);
+  reservations.delete(giftId);
+  saveGiftCatalog();
+  saveReservations();
+
+  try {
+    await apiRequest("deleteGift", { giftId });
+  } catch {
+    if (giftApiUrl) showToast("Removi localmente, mas a sincronizacao online falhou.");
+  }
+
+  updateStats();
+  renderGifts();
+  showToast("Presente excluido.");
 }
 
 function exportCatalog() {
@@ -530,6 +610,8 @@ function saveApiUrl() {
     syncCatalogFromCloud(true);
   } else {
     localStorage.removeItem(apiStorageKey);
+    giftApiUrl = location.hostname.includes("vercel.app") ? "/api/gifts" : "";
+    apiUrl.value = giftApiUrl;
     showToast("Modo online desligado. O app esta usando dados locais.");
   }
 }
