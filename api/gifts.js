@@ -2,16 +2,11 @@ import { neon } from "@neondatabase/serverless";
 
 const sql = neon(process.env.DATABASE_URL);
 
-function response(status, data) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-      "Content-Type": "application/json",
-    },
-  });
+function send(res, status, data) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.status(status).json(data);
 }
 
 async function readData() {
@@ -26,9 +21,10 @@ async function readData() {
   return { ok: true, gifts, reservations };
 }
 
-async function addGift(gift) {
+async function addGift(res, gift) {
   if (!gift?.id || !gift?.title) {
-    return response(400, { ok: false, error: "Presente invalido" });
+    send(res, 400, { ok: false, error: "Presente invalido" });
+    return;
   }
 
   await sql`
@@ -51,12 +47,13 @@ async function addGift(gift) {
       url = excluded.url
   `;
 
-  return response(200, await readData());
+  send(res, 200, await readData());
 }
 
-async function reserveGift(giftId, guest) {
+async function reserveGift(res, giftId, guest) {
   if (!giftId || !guest) {
-    return response(400, { ok: false, error: "Reserva invalida" });
+    send(res, 400, { ok: false, error: "Reserva invalida" });
+    return;
   }
 
   await sql`
@@ -67,37 +64,51 @@ async function reserveGift(giftId, guest) {
       created_at = now()
   `;
 
-  return response(200, await readData());
+  send(res, 200, await readData());
 }
 
-export default async function handler(request) {
-  if (request.method === "OPTIONS") {
-    return response(200, { ok: true });
+export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    send(res, 200, { ok: true });
+    return;
   }
 
   try {
-    if (request.method === "GET") {
-      return response(200, await readData());
+    if (!process.env.DATABASE_URL) {
+      send(res, 500, { ok: false, error: "DATABASE_URL nao configurada" });
+      return;
     }
 
-    if (request.method === "POST") {
-      const body = await request.json();
+    if (req.method === "GET") {
+      send(res, 200, await readData());
+      return;
+    }
+
+    if (req.method === "POST") {
+      const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body || {};
 
       if (body.action === "addGift") {
-        return addGift(body.gift);
+        await addGift(res, body.gift);
+        return;
       }
 
       if (body.action === "reserve") {
-        return reserveGift(body.giftId, body.guest);
+        await reserveGift(res, body.giftId, body.guest);
+        return;
       }
 
       if (body.action === "list") {
-        return response(200, await readData());
+        send(res, 200, await readData());
+        return;
       }
     }
 
-    return response(405, { ok: false, error: "Metodo nao permitido" });
+    send(res, 405, { ok: false, error: "Metodo nao permitido" });
   } catch (error) {
-    return response(500, { ok: false, error: error.message });
+    send(res, 500, { ok: false, error: error.message });
   }
 }
