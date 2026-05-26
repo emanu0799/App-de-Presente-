@@ -99,7 +99,6 @@ const modalDescription = document.querySelector("#modalDescription");
 const modalPrice = document.querySelector("#modalPrice");
 const modalBadge = document.querySelector("#modalBadge");
 const buyLink = document.querySelector("#buyLink");
-const guestName = document.querySelector("#guestName");
 const reserveButton = document.querySelector("#reserveButton");
 const toast = document.querySelector("#toast");
 const soundToggle = document.querySelector("#soundToggle");
@@ -265,14 +264,10 @@ function formatWhatsappMessage(giftTitle = "") {
   return `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(text)}`;
 }
 
-function formatReservationMessage(guest, giftTitle) {
-  const text = `Oi, ${settings.ownerName}! Sou ${guest} e quero reservar este presente: ${giftTitle}.`;
-  return `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(text)}`;
-}
-
 function filteredGifts() {
   const term = searchInput.value.trim().toLowerCase();
   return gifts.filter((gift) => {
+    if (!editorEnabled && reservations.has(gift.id)) return false;
     const matchesFilter = activeFilter === "Todos" || gift.category === activeFilter;
     const matchesTerm = [gift.title, gift.category, gift.description].some((value) =>
       value.toLowerCase().includes(term),
@@ -292,7 +287,7 @@ function renderGifts() {
   grid.innerHTML = visibleGifts
     .map((gift) => {
       const reservedBy = reservations.get(gift.id);
-      const status = reservedBy ? `Reservado por ${reservedBy}` : "Disponivel";
+      const status = reservedBy ? "Reservado" : "Disponivel";
       const giftTitle = escapeHtml(gift.title);
       const giftCategory = escapeHtml(gift.category);
       const giftDescription = escapeHtml(gift.description);
@@ -366,12 +361,10 @@ function openGift(giftId) {
   modalTitle.textContent = activeGift.title;
   modalDescription.textContent = activeGift.description;
   modalPrice.textContent = activeGift.price;
-  modalBadge.textContent = reservedBy ? `Reservado por ${reservedBy}` : "Ainda disponivel";
+  modalBadge.textContent = reservedBy ? "Presente reservado" : "Ainda disponivel";
   buyLink.href = safeUrl(activeGift.url);
-  guestName.value = reservedBy || "";
-  guestName.disabled = Boolean(reservedBy);
-  reserveButton.textContent = reservedBy ? "Presente reservado" : "Reservar presente";
-  reserveButton.disabled = Boolean(reservedBy);
+  reserveButton.textContent = reservedBy ? "Cancelar reserva" : "Reservar presente";
+  reserveButton.classList.toggle("danger-button", Boolean(reservedBy));
   document.body.classList.add("modal-open");
   modal.showModal();
 }
@@ -402,30 +395,29 @@ function playChime() {
 }
 
 async function reserveActiveGift() {
-  if (!activeGift || reservations.has(activeGift.id)) return;
+  if (!activeGift) return;
 
-  const name = guestName.value.trim();
-  if (!name) {
-    showToast("Digite seu nome para reservar esse presente.");
-    guestName.focus();
-    return;
+  const isReserved = reservations.has(activeGift.id);
+
+  if (isReserved) {
+    reservations.delete(activeGift.id);
+  } else {
+    reservations.set(activeGift.id, "reservado");
   }
 
-  reservations.set(activeGift.id, name);
   saveReservations();
   try {
-    await apiRequest("reserve", { giftId: activeGift.id, guest: name });
+    await apiRequest(isReserved ? "cancelReservation" : "reserve", { giftId: activeGift.id });
   } catch {
-    showToast("Reservei neste aparelho, mas a sincronizacao online falhou.");
+    showToast("Atualizei neste aparelho, mas a sincronizacao online falhou.");
   }
   updateStats();
   renderGifts();
   modal.close();
   document.body.classList.remove("modal-open");
-  burstConfetti();
+  if (!isReserved) burstConfetti();
   playChime();
-  window.open(formatReservationMessage(name, activeGift.title), "_blank", "noopener");
-  showToast(`${name}, ${activeGift.title} foi reservado. Confirme pelo WhatsApp!`);
+  showToast(isReserved ? "Reserva cancelada." : "Presente reservado. Ele saiu da lista publica.");
 }
 
 function pickSurprise() {
