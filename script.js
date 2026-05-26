@@ -211,7 +211,7 @@ async function syncCatalogFromCloud(showMessage = false) {
     if (!response.ok) throw new Error("Falha ao ler lista online");
 
     const data = await response.json();
-    if (Array.isArray(data?.gifts)) {
+    if (Array.isArray(data?.gifts) && data.gifts.length) {
       gifts = data.gifts.map(normalizeGift);
       saveGiftCatalog();
     }
