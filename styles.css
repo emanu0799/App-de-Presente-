@@ -431,6 +431,12 @@ h2 {
 .creator-form {
   display: grid;
   gap: 14px;
+  outline: none;
+}
+
+.creator-form.is-editing {
+  border-radius: 8px;
+  animation: formPulse 900ms ease;
 }
 
 .settings-form {
@@ -911,6 +917,18 @@ h2 {
   50% {
     transform: scale(1.6);
     opacity: 0.9;
+  }
+}
+
+@keyframes formPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 109, 119, 0);
+  }
+  28% {
+    box-shadow: 0 0 0 6px rgba(0, 109, 119, 0.16);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 109, 119, 0);
   }
 }
 

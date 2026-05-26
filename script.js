@@ -536,7 +536,12 @@ function editGift(giftId) {
   giftDescription.value = gift.description || "";
   saveGiftButton.textContent = "Salvar alteracoes";
   updatePreview();
-  document.querySelector("#editor").scrollIntoView({ behavior: "smooth", block: "start" });
+  giftForm.classList.remove("is-editing");
+  window.requestAnimationFrame(() => {
+    giftForm.classList.add("is-editing");
+    giftForm.scrollIntoView({ behavior: "smooth", block: "center" });
+    giftTitle.focus({ preventScroll: true });
+  });
   showToast("Edite os campos e salve as alteracoes.");
 }
 

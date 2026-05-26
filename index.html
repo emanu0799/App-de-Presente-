@@ -156,7 +156,7 @@
             <button class="secondary-button" type="submit">Salvar personalizacao</button>
           </form>
 
-          <form class="creator-form" id="giftForm">
+          <form class="creator-form" id="giftForm" tabindex="-1">
             <p class="form-title">Adicionar presente</p>
             <label>
               Link do presente
@@ -207,7 +207,7 @@
             </label>
 
             <div class="editor-actions">
-              <button class="primary-button" type="submit">Adicionar a lista</button>
+              <button class="primary-button" id="saveGiftButton" type="submit">Adicionar a lista</button>
               <button class="secondary-button" id="clearFormButton" type="button">Limpar</button>
             </div>
           </form>
@@ -230,8 +230,8 @@
             <div class="export-box">
               <button class="secondary-button" id="exportButton" type="button">Copiar lista</button>
               <label class="import-box">
-                Link online da planilha
-                <input id="apiUrl" type="url" placeholder="Cole aqui o link do Apps Script publicado" />
+                Link online da API
+                <input id="apiUrl" type="text" placeholder="/api/gifts ou URL completa da API" />
               </label>
               <button class="secondary-button" id="saveApiButton" type="button">Conectar online</button>
               <label class="import-box">
