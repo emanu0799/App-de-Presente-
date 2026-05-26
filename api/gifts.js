@@ -50,6 +50,16 @@ async function addGift(res, gift) {
   send(res, 200, await readData());
 }
 
+async function deleteGift(res, giftId) {
+  if (!giftId) {
+    send(res, 400, { ok: false, error: "Presente invalido" });
+    return;
+  }
+
+  await sql`delete from gifts where id = ${giftId}`;
+  send(res, 200, await readData());
+}
+
 async function reserveGift(res, giftId, guest) {
   if (!giftId || !guest) {
     send(res, 400, { ok: false, error: "Reserva invalida" });
@@ -87,28 +97,3 @@ export default async function handler(req, res) {
       send(res, 200, await readData());
       return;
     }
-
-    if (req.method === "POST") {
-      const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body || {};
-
-      if (body.action === "addGift") {
-        await addGift(res, body.gift);
-        return;
-      }
-
-      if (body.action === "reserve") {
-        await reserveGift(res, body.giftId, body.guest);
-        return;
-      }
-
-      if (body.action === "list") {
-        send(res, 200, await readData());
-        return;
-      }
-    }
-
-    send(res, 405, { ok: false, error: "Metodo nao permitido" });
-  } catch (error) {
-    send(res, 500, { ok: false, error: error.message });
-  }
-}
