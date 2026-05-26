@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lista de Presentes | Emanuel Olavio Garcia Goncalves</title>
+    <meta
+      name="description"
+      content="Lista de presentes interativa para escolher, reservar e compartilhar presentes de um jeito divertido."
+    />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="sparkles" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <header class="hero">
+      <nav class="topbar" aria-label="Navegacao principal">
+        <a class="brand" href="#topo" aria-label="Inicio da lista">
+          <span class="brand-mark" id="brandMark">EG</span>
+          <span id="brandLabel">Lista de Presentes</span>
+        </a>
+        <div class="nav-actions">
+          <a href="#presentes">Presentes</a>
+          <a href="#editor" data-editor-link>Editor</a>
+          <a href="#recado">Recado</a>
+          <button class="icon-button" id="soundToggle" type="button" aria-label="Alternar som">
+            <span aria-hidden="true">♪</span>
+          </button>
+        </div>
+      </nav>
+
+      <section class="hero-grid" id="topo">
+        <div class="hero-copy">
+          <p class="eyebrow">Escolha com carinho</p>
+          <h1 id="heroTitle">Lista de presentes do Emanuel</h1>
+          <p id="heroText">
+            Veja as sugestoes, reserve o presente que combinou com voce e entre no clima com
+            pequenas surpresas pelo caminho.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-button" href="#presentes">Ver lista</a>
+            <button class="secondary-button" id="surpriseButton" type="button">Me surpreenda</button>
+          </div>
+        </div>
+
+        <div class="hero-stage" aria-label="Ilustracao festiva com presentes">
+          <div class="gift-scene">
+            <div class="gift gift-large">
+              <span></span>
+            </div>
+            <div class="gift gift-small">
+              <span></span>
+            </div>
+            <div class="ribbon-loop"></div>
+            <div class="photo-tile">
+              <img
+                id="heroImage"
+                src="https://images.unsplash.com/photo-1512909006721-3d6018887383?auto=format&fit=crop&w=900&q=80"
+                alt="Presentes embalados com lacos"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section class="status-band" aria-label="Resumo da lista">
+        <div>
+          <strong id="reservedCount">0</strong>
+          <span>presentes reservados</span>
+        </div>
+        <div>
+          <strong id="availableCount">0</strong>
+          <span>ainda disponiveis</span>
+        </div>
+        <div>
+          <strong id="favoriteCategory">Casa</strong>
+          <span>categoria em destaque</span>
+        </div>
+      </section>
+
+      <section class="tool-panel" id="presentes">
+        <div class="section-heading">
+          <p class="eyebrow">Lista interativa</p>
+          <h2>Escolha seu presente</h2>
+        </div>
+
+        <div class="controls" aria-label="Filtros da lista">
+          <label class="search-box">
+            <span>Buscar</span>
+            <input id="searchInput" type="search" placeholder="Digite um presente..." autocomplete="off" />
+          </label>
+
+          <div class="segmented" role="group" aria-label="Filtrar por categoria">
+            <button class="active" type="button" data-filter="Todos">Todos</button>
+            <button type="button" data-filter="Casa">Casa</button>
+            <button type="button" data-filter="Cozinha">Cozinha</button>
+            <button type="button" data-filter="Decoracao">Decoracao</button>
+            <button type="button" data-filter="Experiencia">Experiencia</button>
+            <button type="button" data-filter="Sonho">Sonho</button>
+          </div>
+        </div>
+
+        <div class="gift-grid" id="giftGrid" aria-live="polite"></div>
+      </section>
+
+      <section class="creator-panel" id="editor" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Atelie da lista</p>
+            <h2>Monte presentes com links e fotos</h2>
+          </div>
+          <button class="secondary-button" id="resetCatalogButton" type="button">Voltar exemplos</button>
+        </div>
+
+        <div class="creator-grid">
+          <form class="creator-form settings-form" id="settingsForm">
+            <p class="form-title">Personalizar pagina</p>
+            <div class="form-row">
+              <label>
+                Nome
+                <input id="settingName" type="text" maxlength="50" placeholder="Emanuel" />
+              </label>
+              <label>
+                Iniciais
+                <input id="settingInitials" type="text" maxlength="4" placeholder="EG" />
+              </label>
+            </div>
+            <label>
+              Titulo principal
+              <input id="settingTitle" type="text" maxlength="80" placeholder="Lista de presentes do Emanuel" />
+            </label>
+            <label>
+              Frase do topo
+              <textarea id="settingText" maxlength="180"></textarea>
+            </label>
+            <div class="form-row">
+              <label>
+                WhatsApp
+                <input id="settingWhatsapp" type="tel" placeholder="5547999999999" />
+              </label>
+              <label>
+                Imagem principal
+                <input id="settingHeroImage" type="text" placeholder="https://.../foto.jpg" />
+              </label>
+            </div>
+            <button class="secondary-button" type="submit">Salvar personalizacao</button>
+          </form>
+
+          <form class="creator-form" id="giftForm">
+            <p class="form-title">Adicionar presente</p>
+            <label>
+              Link do presente
+              <input id="giftUrl" type="url" placeholder="https://loja.com/produto..." />
+            </label>
+
+            <div class="form-row">
+              <label>
+                Nome do presente
+                <input id="giftTitle" type="text" maxlength="70" placeholder="Ex.: Jogo de panelas" required />
+              </label>
+              <label>
+                Valor
+                <input id="giftPrice" type="text" maxlength="24" placeholder="Ex.: R$ 199" required />
+              </label>
+            </div>
+
+            <div class="form-row">
+              <label>
+                Categoria
+                <select id="giftCategory">
+                  <option>Casa</option>
+                  <option>Cozinha</option>
+                  <option>Decoracao</option>
+                  <option>Experiencia</option>
+                  <option>Sonho</option>
+                </select>
+              </label>
+              <label>
+                Foto por URL
+                <input id="giftImage" type="text" placeholder="https://.../foto.jpg" />
+              </label>
+            </div>
+
+            <label>
+              Ou envie uma foto
+              <input id="giftPhoto" type="file" accept="image/*" />
+            </label>
+
+            <label>
+              Mensagem do card
+              <textarea
+                id="giftDescription"
+                maxlength="150"
+                placeholder="Uma frase curta e carinhosa sobre esse presente"
+                required
+              ></textarea>
+            </label>
+
+            <div class="editor-actions">
+              <button class="primary-button" type="submit">Adicionar a lista</button>
+              <button class="secondary-button" id="clearFormButton" type="button">Limpar</button>
+            </div>
+          </form>
+
+          <aside class="preview-card" aria-live="polite">
+            <div class="gift-card">
+              <div class="gift-image">
+                <img id="previewImage" src="https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=900&q=80" alt="Previa do presente" />
+                <span class="tag" id="previewCategory">Casa</span>
+              </div>
+              <div class="card-body">
+                <h3 id="previewTitle">Seu presente aparece aqui</h3>
+                <p id="previewDescription">Cole um link, escolha uma foto e escreva uma frase para montar um card lindo.</p>
+                <div class="card-meta">
+                  <span class="price" id="previewPrice">R$ 0</span>
+                  <span class="reserved-by">Previa</span>
+                </div>
+              </div>
+            </div>
+            <div class="export-box">
+              <button class="secondary-button" id="exportButton" type="button">Copiar lista</button>
+              <label class="import-box">
+                Link online da planilha
+                <input id="apiUrl" type="url" placeholder="Cole aqui o link do Apps Script publicado" />
+              </label>
+              <button class="secondary-button" id="saveApiButton" type="button">Conectar online</button>
+              <label class="import-box">
+                Importar lista
+                <textarea id="importData" placeholder="Cole aqui uma lista copiada"></textarea>
+              </label>
+              <button class="primary-button" id="importButton" type="button">Aplicar lista</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="recado" id="recado">
+        <div>
+          <p class="eyebrow">Com carinho</p>
+          <h2>Um recado especial</h2>
+          <p>
+            O presente mais importante e celebrar junto. Se preferir, voce tambem pode enviar uma
+            mensagem e combinar diretamente comigo.
+          </p>
+        </div>
+        <a class="primary-button" id="whatsappLink" href="#" target="_blank" rel="noreferrer">
+          Enviar mensagem
+        </a>
+      </section>
+    </main>
+
+    <nav class="mobile-dock" aria-label="Atalhos da lista">
+      <a href="#topo">Inicio</a>
+      <a href="#presentes">Lista</a>
+      <a href="#recado">Recado</a>
+      <a href="#editor" data-editor-link>Editar</a>
+    </nav>
+
+    <dialog class="gift-modal" id="giftModal">
+      <form method="dialog">
+        <button class="close-button" value="cancel" aria-label="Fechar">x</button>
+      </form>
+      <div class="modal-body">
+        <img id="modalImage" alt="" />
+        <div>
+          <p class="eyebrow" id="modalCategory"></p>
+          <h2 id="modalTitle"></h2>
+          <p id="modalDescription"></p>
+          <div class="price-row">
+            <strong id="modalPrice"></strong>
+            <span id="modalBadge"></span>
+          </div>
+          <label class="name-field">
+            Seu nome para reservar
+            <input id="guestName" type="text" maxlength="40" placeholder="Ex.: Maria e Joao" />
+          </label>
+          <div class="modal-actions">
+            <button class="primary-button" id="reserveButton" type="button">Reservar presente</button>
+            <a class="secondary-button" id="buyLink" href="#" target="_blank" rel="noreferrer">Comprar</a>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
+    <script src="script.js"></script>
+  </body>
+</html>
