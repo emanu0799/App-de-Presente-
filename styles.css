@@ -1426,3 +1426,281 @@ h2 {
     transition-duration: 1ms !important;
   }
 }
+
+/* Aura-inspired theme layer */
+body {
+  background:
+    linear-gradient(90deg, rgba(16, 25, 35, 0.06) 1px, transparent 1px) 0 0 / 25% 100%,
+    #e5e7eb;
+}
+
+.hero {
+  width: min(1280px, calc(100% - 24px));
+  min-height: 640px;
+  margin: 12px auto 0;
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(16, 185, 129, 0.18), transparent 22rem),
+    radial-gradient(circle at 86% 20%, rgba(215, 168, 75, 0.2), transparent 18rem),
+    linear-gradient(180deg, #16191f 0%, #0f1115 100%);
+  color: #fff;
+  box-shadow: 0 20px 60px rgba(16, 25, 35, 0.16);
+}
+
+.topbar {
+  width: min(1080px, calc(100% - 48px));
+  padding-top: 24px;
+}
+
+.brand,
+.nav-actions a {
+  color: #fff;
+}
+
+.brand-mark {
+  background: #10b981;
+  color: #07110d;
+  box-shadow: none;
+}
+
+.nav-actions {
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+}
+
+.nav-actions a {
+  color: rgba(255, 255, 255, 0.72);
+  padding: 8px 4px;
+}
+
+.icon-button {
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.hero-grid {
+  width: min(1080px, calc(100% - 48px));
+  min-height: 530px;
+  padding: 28px 0 46px;
+}
+
+.eyebrow {
+  color: #10b981;
+}
+
+h1 {
+  color: #fff;
+  font-size: clamp(2.9rem, 6vw, 5.9rem);
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  letter-spacing: -0.015em;
+}
+
+.hero-copy p:not(.eyebrow) {
+  color: rgba(255, 255, 255, 0.68);
+  max-width: 560px;
+}
+
+.hero-actions .secondary-button {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.hero-stage,
+.gift-scene {
+  min-height: 390px;
+}
+
+.photo-tile {
+  width: min(68%, 410px);
+  border: 8px solid rgba(255, 255, 255, 0.84);
+  border-radius: 24px;
+}
+
+.gift {
+  border-radius: 22px;
+}
+
+.gift-large {
+  left: 14px;
+  bottom: 54px;
+  width: 142px;
+  height: 124px;
+}
+
+.gift-small {
+  top: 70px;
+  right: 54px;
+  width: 88px;
+  height: 78px;
+}
+
+.ribbon-loop {
+  top: 72px;
+  left: 32px;
+  width: 132px;
+  height: 132px;
+  border-color: #10b981;
+  border-right-color: transparent;
+}
+
+.status-band {
+  margin-top: 24px;
+  border: 0;
+  border-radius: 22px;
+  box-shadow: 0 14px 36px rgba(16, 25, 35, 0.08);
+}
+
+.tool-panel,
+.creator-panel,
+.recado {
+  width: min(1120px, calc(100% - 32px));
+}
+
+.gift-grid {
+  gap: 16px;
+}
+
+.gift-card {
+  border: 1px solid rgba(16, 25, 35, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(16, 25, 35, 0.08);
+}
+
+.gift-image,
+.gift-image img {
+  border-radius: 20px 20px 0 0;
+}
+
+.tag {
+  border-radius: 999px;
+  background: rgba(15, 17, 21, 0.78);
+  backdrop-filter: blur(10px);
+}
+
+.primary-button,
+.secondary-button,
+.small-button,
+.segmented button,
+.search-box input,
+.name-field input,
+.creator-form input,
+.creator-form select,
+.creator-form textarea,
+.import-box textarea {
+  border-radius: 999px;
+}
+
+.creator-form textarea,
+.import-box textarea {
+  border-radius: 18px;
+}
+
+.gift-modal {
+  border-radius: 24px;
+}
+
+.modal-body img {
+  border-radius: 20px;
+}
+
+.recado {
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(16, 185, 129, 0.18), transparent 18rem),
+    linear-gradient(135deg, #16191f 0%, #0f1115 100%);
+}
+
+@media (max-width: 880px) {
+  .hero {
+    min-height: auto;
+    border-radius: 28px;
+  }
+
+  .hero-grid {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 620px) {
+  body {
+    background: #eef0ed;
+  }
+
+  .hero {
+    width: calc(100% - 16px);
+    margin-top: 8px;
+    border-radius: 24px;
+  }
+
+  .topbar,
+  .hero-grid {
+    width: calc(100% - 28px);
+  }
+
+  .nav-actions {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    backdrop-filter: none;
+  }
+
+  h1 {
+    max-width: 9ch;
+    font-size: clamp(2.35rem, 12vw, 3.25rem);
+  }
+
+  .hero-copy p:not(.eyebrow) {
+    font-size: 0.95rem;
+  }
+
+  .hero-stage,
+  .gift-scene {
+    min-height: 220px;
+  }
+
+  .photo-tile {
+    width: 62%;
+    border-width: 6px;
+    border-radius: 18px;
+  }
+
+  .gift-large {
+    width: 96px;
+    height: 84px;
+    border-radius: 16px;
+  }
+
+  .gift-small {
+    width: 68px;
+    height: 60px;
+    border-radius: 14px;
+  }
+
+  .ribbon-loop {
+    width: 104px;
+    height: 104px;
+    border-width: 11px;
+  }
+
+  .status-band {
+    border-radius: 18px;
+  }
+
+  .gift-card {
+    grid-template-columns: 96px 1fr;
+    border-radius: 18px;
+  }
+
+  .gift-image,
+  .gift-image img {
+    border-radius: 18px 0 0 18px;
+  }
+}
