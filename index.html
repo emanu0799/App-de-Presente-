@@ -10,7 +10,11 @@
     />
     <link id="favicon" rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
+    <script src="condor-assets/js/lucide.es.js"></script>
   </head>
   <body>
     <div class="sparkles" aria-hidden="true">
@@ -29,11 +33,11 @@
           <span id="brandLabel">Lista de Presentes</span>
         </a>
         <div class="nav-actions">
-          <a href="#presentes">Presentes</a>
-          <a href="#editor" data-editor-link>Editor</a>
-          <a href="#recado">Recado</a>
+          <a href="#presentes"><i data-lucide="gift"></i><span>Presentes</span></a>
+          <a href="#editor" data-editor-link><i data-lucide="settings-2"></i><span>Editor</span></a>
+          <a href="#recado"><i data-lucide="message-circle"></i><span>Recado</span></a>
           <button class="icon-button" id="soundToggle" type="button" aria-label="Alternar som">
-            <span aria-hidden="true">♪</span>
+            <i data-lucide="music-2" aria-hidden="true"></i>
           </button>
         </div>
       </nav>
@@ -47,8 +51,8 @@
             pequenas surpresas pelo caminho.
           </p>
           <div class="hero-actions">
-            <a class="primary-button" href="#presentes">Ver lista</a>
-            <button class="secondary-button" id="surpriseButton" type="button">Me surpreenda</button>
+            <a class="primary-button" href="#presentes"><i data-lucide="clipboard-list"></i>Ver lista</a>
+            <button class="secondary-button" id="surpriseButton" type="button"><i data-lucide="sparkles"></i>Me surpreenda</button>
           </div>
         </div>
 
@@ -261,10 +265,10 @@
     </main>
 
     <nav class="mobile-dock" aria-label="Atalhos da lista">
-      <a href="#topo">Inicio</a>
-      <a href="#presentes">Lista</a>
-      <a href="#recado">Recado</a>
-      <a href="#editor" data-editor-link>Editar</a>
+      <a href="#topo"><i data-lucide="home"></i><span>Inicio</span></a>
+      <a href="#presentes"><i data-lucide="gift"></i><span>Lista</span></a>
+      <a href="#recado"><i data-lucide="message-circle"></i><span>Recado</span></a>
+      <a href="#editor" data-editor-link><i data-lucide="settings-2"></i><span>Editar</span></a>
     </nav>
 
     <dialog class="gift-modal" id="giftModal">
@@ -293,5 +297,6 @@
     <canvas id="confettiCanvas" aria-hidden="true"></canvas>
 
     <script src="script.js"></script>
+    <script src="condor-assets/js/lucide-init.js"></script>
   </body>
 </html>
