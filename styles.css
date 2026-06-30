@@ -2820,3 +2820,226 @@ h2 {
     left: 8px;
   }
 }
+
+/* Final responsive lock: keeps the gift list tidy on real phones and desktops. */
+.tool-panel {
+  max-width: 1080px;
+}
+
+.tool-panel .section-heading h2 {
+  font-size: clamp(1.8rem, 3.35vw, 2.85rem);
+}
+
+.tool-panel .gift-grid {
+  grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+  gap: 14px;
+}
+
+.tool-panel .gift-card {
+  min-width: 0;
+}
+
+.tool-panel .card-body {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.tool-panel .card-actions {
+  position: static;
+}
+
+@media (max-width: 760px) {
+  .tool-panel {
+    width: calc(100% - 14px);
+    padding: 10px;
+  }
+
+  .tool-panel .section-heading {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .tool-panel .section-heading h2 {
+    max-width: 100%;
+    margin-top: 4px;
+    font-size: clamp(1.55rem, 7vw, 2.15rem);
+    line-height: 1;
+    text-align: left;
+  }
+
+  .tool-panel .controls {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .tool-panel .search-box input {
+    min-height: 38px;
+    padding: 10px 12px;
+  }
+
+  .tool-panel .segmented {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 6px;
+    margin: 0 -10px;
+    padding: 4px 10px;
+    overflow-x: auto;
+  }
+
+  .tool-panel .segmented button {
+    flex: 0 0 auto;
+    min-height: 34px;
+    padding: 0 12px;
+    font-size: 0.76rem;
+  }
+
+  .tool-panel .gift-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 9px;
+    width: 100%;
+  }
+
+  .tool-panel .gift-card {
+    display: grid !important;
+    grid-template-columns: 112px minmax(0, 1fr) !important;
+    min-height: 138px;
+    overflow: hidden;
+    border-radius: 18px;
+  }
+
+  .tool-panel .gift-image {
+    width: 112px;
+    height: 100%;
+    min-height: 138px;
+    aspect-ratio: auto;
+    border-radius: 18px 0 0 18px;
+  }
+
+  .tool-panel .gift-image img {
+    width: 100%;
+    height: 100%;
+    min-height: 138px;
+    object-fit: cover;
+    border-radius: 18px 0 0 18px;
+  }
+
+  .tool-panel .tag {
+    top: 8px;
+    left: 8px;
+    max-width: calc(100% - 16px);
+    padding: 5px 8px;
+    overflow: hidden;
+    font-size: 0.66rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tool-panel .card-body {
+    display: flex !important;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+    padding: 10px;
+  }
+
+  .tool-panel .card-body h3 {
+    display: -webkit-box;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+    font-size: 0.84rem;
+    line-height: 1.18;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .tool-panel .card-body p {
+    display: none !important;
+  }
+
+  .tool-panel .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    min-height: 20px;
+    margin-top: auto;
+    padding-top: 2px;
+  }
+
+  .tool-panel .price {
+    min-width: 0;
+    overflow: hidden;
+    font-size: 0.78rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tool-panel .reserved-by {
+    flex: 0 0 auto;
+    max-width: 80px;
+    padding: 4px 7px;
+    overflow: hidden;
+    font-size: 0.62rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tool-panel .card-actions {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 34px !important;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .tool-panel .card-actions button,
+  .tool-panel .card-actions a {
+    min-width: 0;
+    min-height: 34px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    line-height: 1;
+  }
+
+  .tool-panel .card-actions .primary-button {
+    width: 100%;
+  }
+
+  .tool-panel .card-actions .small-button {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    font-size: 0.66rem;
+  }
+
+  .mobile-dock {
+    bottom: calc(8px + env(safe-area-inset-bottom));
+    right: 8px;
+    left: 8px;
+  }
+}
+
+@media (max-width: 370px) {
+  .tool-panel .gift-card {
+    grid-template-columns: 96px minmax(0, 1fr) !important;
+    min-height: 128px;
+  }
+
+  .tool-panel .gift-image,
+  .tool-panel .gift-image img {
+    width: 96px;
+    min-height: 128px;
+  }
+
+  .tool-panel .card-body {
+    padding: 9px;
+  }
+
+  .tool-panel .card-body h3 {
+    font-size: 0.78rem;
+  }
+}
