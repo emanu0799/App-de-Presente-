@@ -2054,6 +2054,40 @@ h2 {
   background: var(--surface);
 }
 
+.tool-panel {
+  padding: clamp(18px, 3vw, 32px);
+}
+
+.tool-panel .section-heading {
+  display: grid;
+  grid-template-columns: minmax(170px, 0.5fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 24px;
+  width: 100%;
+  margin: 0 0 20px;
+}
+
+.tool-panel .section-heading h2 {
+  max-width: 100%;
+  margin: 0;
+  font-size: clamp(1.9rem, 3.7vw, 3rem);
+  line-height: 0.98;
+  text-align: right;
+  text-wrap: balance;
+}
+
+.tool-panel .section-heading .eyebrow {
+  margin: 0;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.35fr);
+  gap: 12px;
+  align-items: end;
+  margin: 0 0 20px;
+}
+
 .segmented,
 .search-box {
   background: #fff;
@@ -2062,12 +2096,37 @@ h2 {
 }
 
 .segmented button {
+  flex: 0 0 auto;
+  min-height: 38px;
+  padding: 0 14px;
   color: var(--muted);
 }
 
-.segmented button.is-active {
+.segmented button.is-active,
+.segmented button.active {
   color: #fff;
   background: var(--ink);
+}
+
+.segmented {
+  align-items: center;
+  min-width: 0;
+  padding: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.segmented::-webkit-scrollbar {
+  display: none;
+}
+
+.search-box {
+  min-width: 0;
+}
+
+.search-box span {
+  display: block;
+  margin-bottom: 8px;
 }
 
 .search-box input,
@@ -2084,10 +2143,18 @@ h2 {
 
 .gift-grid {
   width: min(1160px, calc(100% - 32px));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.tool-panel .gift-grid {
+  width: 100%;
 }
 
 .gift-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
   overflow: hidden;
   background: #fff;
   border: 1px solid var(--line);
@@ -2108,7 +2175,7 @@ h2 {
 }
 
 .gift-image {
-  aspect-ratio: 1.45;
+  aspect-ratio: 1.32;
   background: var(--surface-strong);
 }
 
@@ -2133,6 +2200,18 @@ h2 {
 }
 
 .gift-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 18px;
+}
+
+.card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
   padding: 18px;
 }
 
@@ -2142,19 +2221,52 @@ h2 {
   line-height: 1.25;
 }
 
-.gift-description {
+.card-body h3 {
   display: -webkit-box;
-  min-height: 3.4em;
+  min-height: auto;
+  margin: 0;
   overflow: hidden;
-  font-size: 0.92rem;
-  line-height: 1.55;
+  color: var(--ink);
+  font-size: clamp(1rem, 1.45vw, 1.12rem);
+  line-height: 1.25;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
 
+.gift-description {
+  display: -webkit-box;
+  min-height: 3.1em;
+  overflow: hidden;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.card-body p {
+  display: -webkit-box;
+  min-height: 4.2em;
+  margin: 0;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
 .gift-meta {
   align-items: center;
+  margin-top: auto;
   min-height: 30px;
+  padding-top: 12px;
+}
+
+.card-meta {
+  align-items: center;
+  margin-top: auto;
+  min-height: 30px;
+  padding-top: 8px;
 }
 
 .price {
@@ -2183,12 +2295,38 @@ h2 {
   grid-template-columns: minmax(0, 1fr) 46px;
   gap: 8px;
   align-items: center;
+  margin-top: 10px;
+}
+
+.card-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 46px;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
 }
 
 .reserve-button,
 .wa-button {
   min-height: 44px;
   white-space: nowrap;
+}
+
+.card-actions button,
+.card-actions a {
+  min-width: 0;
+  min-height: 44px;
+  border-radius: 999px;
+}
+
+.card-actions .primary-button {
+  width: 100%;
+}
+
+.card-actions .small-button {
+  width: 46px;
+  height: 44px;
+  padding: 0;
 }
 
 .wa-button {
@@ -2320,6 +2458,20 @@ h2 {
   .status-band {
     margin-top: 18px;
   }
+
+  .tool-panel .section-heading {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .tool-panel .section-heading h2 {
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .controls {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 620px) {
@@ -2434,20 +2586,57 @@ h2 {
     border-radius: 24px;
   }
 
+  .tool-panel {
+    padding: 14px;
+  }
+
+  .tool-panel .section-heading {
+    margin-bottom: 14px;
+  }
+
+  .tool-panel .section-heading h2 {
+    font-size: clamp(1.55rem, 8vw, 2.15rem);
+  }
+
+  .controls {
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .segmented {
+    margin-right: -14px;
+    padding-right: 14px;
+  }
+
+  .segmented button {
+    min-height: 36px;
+    padding: 0 12px;
+    font-size: 0.78rem;
+  }
+
   .gift-grid {
     gap: 10px;
   }
 
   .gift-card {
-    grid-template-columns: 104px minmax(0, 1fr);
-    min-height: 154px;
+    display: grid;
+    grid-template-columns: 116px minmax(0, 1fr);
+    min-height: 148px;
     border-radius: 20px;
   }
 
   .gift-image,
   .gift-image img {
     height: 100%;
+    min-height: 148px;
     border-radius: 20px 0 0 20px;
+  }
+
+  .tag {
+    top: 10px;
+    left: 10px;
+    padding: 6px 9px;
+    font-size: 0.68rem;
   }
 
   .gift-body {
@@ -2455,30 +2644,36 @@ h2 {
     padding: 12px;
   }
 
-  .gift-title {
+  .card-body {
+    gap: 6px;
+    min-width: 0;
+    padding: 11px;
+  }
+
+  .gift-title,
+  .card-body h3 {
     display: -webkit-box;
     overflow: hidden;
-    font-size: 0.92rem;
+    font-size: 0.86rem;
     line-height: 1.22;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
 
-  .gift-description {
-    min-height: 0;
-    margin-top: 6px;
-    font-size: 0.78rem;
-    line-height: 1.42;
-    -webkit-line-clamp: 2;
+  .gift-description,
+  .card-body p {
+    display: none;
   }
 
-  .gift-meta {
+  .gift-meta,
+  .card-meta {
     min-height: 24px;
-    margin-top: 8px;
+    margin-top: auto;
+    padding-top: 4px;
   }
 
   .price {
-    font-size: 0.84rem;
+    font-size: 0.78rem;
   }
 
   .available,
@@ -2487,21 +2682,141 @@ h2 {
     font-size: 0.64rem;
   }
 
-  .gift-actions {
-    grid-template-columns: minmax(0, 1fr) 40px;
+  .gift-actions,
+  .card-actions {
+    grid-template-columns: minmax(0, 1fr) 36px;
     gap: 6px;
-    margin-top: 8px;
+    margin-top: 6px;
   }
 
   .reserve-button,
-  .wa-button {
+  .wa-button,
+  .card-actions button,
+  .card-actions a {
     min-height: 38px;
-    font-size: 0.78rem;
+    font-size: 0.76rem;
+  }
+
+  .card-actions .small-button {
+    width: 36px;
+    height: 38px;
   }
 
   .mobile-dock {
     right: 10px;
     bottom: 10px;
     left: 10px;
+  }
+}
+
+@media (max-width: 430px) {
+  .tool-panel,
+  .creator-panel,
+  .recado,
+  .status-band {
+    width: calc(100% - 14px);
+  }
+
+  .tool-panel {
+    padding: 10px;
+    border-radius: 22px;
+  }
+
+  .tool-panel .section-heading {
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .tool-panel .section-heading h2 {
+    font-size: clamp(1.45rem, 7.4vw, 1.95rem);
+  }
+
+  .controls {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .search-box span {
+    margin-bottom: 6px;
+    font-size: 0.72rem;
+  }
+
+  .search-box input {
+    min-height: 38px;
+    padding: 10px 12px;
+    font-size: 0.78rem;
+  }
+
+  .segmented {
+    margin-right: -10px;
+    padding: 4px 10px 4px 4px;
+  }
+
+  .segmented button {
+    min-height: 34px;
+    padding: 0 11px;
+    font-size: 0.74rem;
+  }
+
+  .gift-grid {
+    gap: 8px;
+  }
+
+  .gift-card {
+    grid-template-columns: 108px minmax(0, 1fr);
+    min-height: 136px;
+    border-radius: 18px;
+  }
+
+  .gift-image,
+  .gift-image img {
+    min-height: 136px;
+    border-radius: 18px 0 0 18px;
+  }
+
+  .card-body {
+    gap: 5px;
+    padding: 10px;
+  }
+
+  .card-body h3 {
+    font-size: 0.82rem;
+    line-height: 1.18;
+  }
+
+  .card-meta {
+    gap: 6px;
+    min-height: 20px;
+    padding-top: 2px;
+  }
+
+  .reserved-by {
+    max-width: 78px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .card-actions {
+    grid-template-columns: minmax(0, 1fr) 34px;
+    margin-top: 4px;
+  }
+
+  .card-actions button,
+  .card-actions a {
+    min-height: 34px;
+    font-size: 0.72rem;
+  }
+
+  .card-actions .small-button {
+    width: 34px;
+    height: 34px;
+    font-size: 0.68rem;
+  }
+
+  .mobile-dock {
+    bottom: calc(8px + env(safe-area-inset-bottom));
+    right: 8px;
+    left: 8px;
   }
 }
